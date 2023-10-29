@@ -1,12 +1,12 @@
 #include <getopt.h>
-#include <memory.h>
+#include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <assert.h>
-#include <stdio.h>
 
 #define STR_IDENT(x) #x
 #define STR_VALUE(x) STR_IDENT(x)
+#define STR_STR_LEN(s) s, sizeof s
 
 #define CHARSET_LOWERS "qwertyuiopasdfghjklzxcvbnm"
 #define CHARSET_UPPERS "QWERTYUIOPASDFGHJKLZXCVBNM"
@@ -109,32 +109,26 @@ size_t trim_last_newline(const char * src, size_t src_len) {
 }
 
 void print_help() {
-  puts("PGen (Password Generator). (c) 2023 Mark Mandriota");
-  puts("");
-  puts("Usage:");
-  puts("");
-  puts("\tpgen [options]");
-  puts("");
-  puts("Options:");
-  puts("\t -h");
-  puts("\t   print this message");
-  puts("\t -n <number>");
-  puts("\t   password length (defaults to " STR_VALUE(PLENGTH_DEFAULT) ")");
-  puts("");
-  puts("\tCharset (defaults to \"" DEFAULT_CHARSET "\"):");
-  puts("");
-  puts("\t -c <string>");
-  puts("\t   add a custom string to charset");
-  puts("\t -C");
-  puts("\t   add a custom string to charset (read from stdin)");
-  puts("\t -l");
-  puts("\t   add lower letters to charset");
-  puts("\t -u");
-  puts("\t   add upper letters to charset");
-  puts("\t -d");
-  puts("\t   add digits to charset");
-  puts("\t -s");
-  puts("\t   add special characters to custom charset");
-  puts("");
-  fflush(stdout);
+  write(STDOUT_FILENO,
+	    STR_STR_LEN("PGen (Password Generator). (c) 2023 Mark Mandriota\n\n\n"
+					"Usage:\n\n"
+					"\tpgen [options]\n\n"
+					"Options:\n\n"
+					"\t -h\n"
+					"\t   print this message\n"
+					"\t -n <number>\n"
+					"\t   password length (defaults to " STR_VALUE(PLENGTH_DEFAULT) ")\n\n"
+					"\tCharset (defaults to \"" DEFAULT_CHARSET "\"):\n\n"
+					"\t -c <string>\n"
+					"\t   add a custom string to charset\n"
+					"\t -C\n"
+					"\t   add a custom string to charset (read from stdin)\n"
+					"\t -l\n"
+					"\t   add lower letters to charset\n"
+					"\t -u\n"
+					"\t   add upper letters to charset\n"
+					"\t -d\n"
+					"\t   add digits to charset\n"
+					"\t -s\n"
+					"\t   add special characters to custom charset\n\n"));
 }
