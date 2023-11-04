@@ -130,5 +130,5 @@ void print_help() {
 					"\t -d\n"
 					"\t   add digits to charset\n"
 					"\t -s\n"
-					"\t   add special characters to custom charset\n\n"));
+					"\t   add special characters to charset\n\n"));
 }
