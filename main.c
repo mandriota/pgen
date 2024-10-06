@@ -44,11 +44,13 @@ _Static_assert(BUF_LEN > CHARSET_LEN, "BUF_LEN should be bigger than CHARSET_SIZ
 size_t parse(const char s[restrict static 1]) {
   size_t r = 0;
 
-  for (size_t i = 0; s[i]; ++i)
-    if (s[i] >= '0' && s[i] <= '9')
+  for (size_t i = 0; s[i]; ++i) {
+    if (s[i] >= '0' && s[i] <= '9') {
       r = r * 10 + s[i] - '0';
-    else
+    } else {
       break;
+    }
+  }
 
   return r;
 }
