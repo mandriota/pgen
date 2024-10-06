@@ -22,7 +22,8 @@
 
 #define STR_IDENT(x) #x
 #define STR_VALUE(x) STR_IDENT(x)
-#define STR_STR_LEN(s) s, sizeof s
+
+#define WRITE_CONST(fd, str_lit) (write(fd, str_lit, sizeof str_lit))
 
 #define CHARSET_LOWERS "qwertyuiopasdfghjklzxcvbnm"
 #define CHARSET_UPPERS "QWERTYUIOPASDFGHJKLZXCVBNM"
@@ -68,7 +69,7 @@ size_t trim_last_newline(const char src[restrict static 1], size_t src_len) {
 
 void print_help() {
   // clang-format off
-  write(STDOUT_FILENO, STR_STR_LEN(
+  WRITE_CONST(STDOUT_FILENO,
 	  "PGen (Password Generator). (c) 2023 Mark Mandriota\n\n\n"
 	  "Usage:\n\n"
 	  "\tpgen [options]\n\n"
@@ -90,7 +91,7 @@ void print_help() {
 	  "\t   add digits to charset\n"
 	  "\t -s\n"
 	  "\t   add special characters to charset\n\n"
-  ));
+  );
   // clang-format on
 }
 
@@ -147,7 +148,7 @@ int main(int argc, char *argv[]) {
 
     for (size_t i = 0; i < toread; i += ENTROPY_LEN) {
       if (getentropy(buf + i, ENTROPY_LEN)) {
-        write(STDOUT_FILENO, STR_STR_LEN("failed to get entropy"));
+        WRITE_CONST(STDERR_FILENO, "failed to get entropy");
         return 1;
       };
     }
@@ -159,8 +160,7 @@ int main(int argc, char *argv[]) {
     write(STDOUT_FILENO, buf, toread);
   } while (pwd_rem);
 
-  buf[0] = '\n';
-  write(STDOUT_FILENO, buf, 1);
+  WRITE_CONST(STDOUT_FILENO, "\n");
 
   return 0;
 }
